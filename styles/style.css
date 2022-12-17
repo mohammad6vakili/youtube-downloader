@@ -1,0 +1,26 @@
+@import "../public/fonts/inter/inter.css";
+
+@font-face {
+  font-family: "estedad";
+  src: url('../public/fonts/Estedad-ExtraLight.ttf');
+}
+
+@font-face {
+  font-family: "estedad-bold";
+  src: url('../public/fonts/Estedad-Black.ttf');
+}
+
+@font-face {
+  font-family: "estedad-bolish";
+  src: url('../public/fonts/estedad/Estedad[wght\,kshd].ttf');
+}
+
+@font-face {
+  font-family: "estedad-bolisher";
+  src: url('../public/fonts/Estedad-ExtraBold.ttf');
+}
+
+* {
+  direction: ltr;
+  font-family: Inter, 'estedad-bolish';
+}
