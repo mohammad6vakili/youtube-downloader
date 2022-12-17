@@ -41,13 +41,32 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
         </Swiper>
       </section>
       <div>
-        <section
-          className="mt-10 w-full relative grid gap-[7px] place-content-start items-center lg:grid-cols-6 grid-cols-3"
-          style={{ direction: "ltr" }}
-        >
-          {AllCategory.map((res, index) => (
-            <CardExplore data={res} key={index} />
-          ))}
+        <section className="w-full relative mt-10" style={{ direction: "ltr" }}>
+          <Swiper
+            slidesPerView={6}
+            spaceBetween={13}
+            className="mySwiper"
+            breakpoints={{
+              300: {
+                width: 300,
+                slidesPerView: 1,
+              },
+              568: {
+                width: 568,
+                slidesPerView: 2,
+              },
+              970: {
+                width: 970,
+                slidesPerView: 3,
+              },
+            }}
+          >
+            {AllCategory.map((res, index) => (
+              <SwiperSlide key={index}>
+                <CardExplore data={res} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </section>
 
         <section className="mt-10 w-full relative">
