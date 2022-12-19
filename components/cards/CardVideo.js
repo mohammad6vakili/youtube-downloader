@@ -68,7 +68,7 @@ export default function CardVideo({ data, key }) {
             {/* <!-- Description --> */}
             <div clas="flex flex-col" style={{ direction: "ltr" }}>
               <Link href={`/profile/${channel[0]?.channel_id}`}>
-                <p className="dark:text-slate-100 text-gray-800 text-xs font-">
+                <p className="dark:text-stone-100 text-gray-800 text-xs font-">
                   {data?.video_title?.length > 50
                     ? data?.video_title?.substring(0, 50) + "..."
                     : data?.video_title}
@@ -76,16 +76,16 @@ export default function CardVideo({ data, key }) {
               </Link>
               <Link href={"/profile/" + channel[0]?.channel_id} passHref>
                 <a
-                  className="dark:text-slate-300 text-gray-500 text-xs mt-2 hover:text-gray-900 capitalize"
+                  className="dark:text-stone-300 text-gray-500 text-xs mt-2 hover:text-gray-900 capitalize"
                   href="#"
                 >
                   {data?.video_metadata?.items[0]?.snippet?.channelTitle}{" "}
                 </a>
               </Link>
               <div className="flex items-center">
-                {/* <div className="text-gray-500 dark:text-slate-400 text-xs mt-1"> {data?.video_metadata.items[0].snippet.publishedAt}</div>
+                {/* <div className="text-gray-500 dark:text-stone-400 text-xs mt-1"> {data?.video_metadata.items[0].snippet.publishedAt}</div>
                 <span className='px-1 font-light text-gray-500'>~</span> */}
-                {/* <p className="text-gray-500 dark:text-slate-400 text-xs mt-1">views {data?.view_count}</p> */}
+                {/* <p className="text-gray-500 dark:text-stone-400 text-xs mt-1">views {data?.view_count}</p> */}
               </div>
             </div>
           </div>

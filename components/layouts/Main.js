@@ -16,7 +16,7 @@ export default function Main({
           <div
             className={`${
               hiddenSidebar ? "w-full lg:p-0 p-4" : `lg:w-10/12 w-full p-2`
-            } flex-col dark:bg-slate-800  bg-gray-100 mx-auto flex pt-6`}
+            } flex-col dark:bg-stone-800  bg-gray-100 mx-auto flex pt-6`}
           >
             {children}
           </div>
@@ -31,7 +31,7 @@ export default function Main({
           <div
             className={`${
               hiddenSidebar ? "w-full lg:px-16 p-4" : `p-4 w-full`
-            } flex-col dark:bg-slate-800 bg-gray-100 mx-auto flex pt-6`}
+            } flex-col dark:bg-stone-800 bg-gray-100 mx-auto flex pt-6`}
           >
             {children}
           </div>

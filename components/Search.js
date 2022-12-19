@@ -46,14 +46,14 @@ export default function Search() {
           <div className="relative w-full rounded-lg cursor-default overflow-hidden bg-white  sm:text-sm">
             <Combobox.Input
               placeholder={"Search"}
-              className="py-2 h-11 sm:w-[450px] lg:w-[600px] border text-left focus:outline-none rounded-lg bg-gray-100 dark:bg-slate-800
-                focus:border-gray-300 dark:focus:border-slate-700 transition text-md placeholder:text-base w-[600px] duration-200 dark:border-slate-700 border-gray-300 pl-4 pr-10"
+              className="py-2 h-11 sm:w-[450px] lg:w-[600px] border text-left focus:outline-none rounded-lg bg-gray-100 dark:bg-stone-800
+                focus:border-gray-300 dark:focus:border-stone-700 transition text-md placeholder:text-base w-[600px] duration-200 dark:border-stone-700 border-gray-300 pl-4 pr-10"
               displayValue={(person) => person?.video_title}
               onChange={(event) => setQuery(event.target.value)}
             />
             <Combobox.Button
               onClick={handleSubmitSearchEngine}
-              className="absolute w-14 rounded-r-lg flex justify-center items-center h-full right-0 top-0 bottom-0 dark:bg-slate-700 bg-gray-100 border-gray-300 dark:border-slate-700 border"
+              className="absolute w-14 rounded-r-lg flex justify-center items-center h-full right-0 top-0 bottom-0 dark:bg-stone-700 bg-gray-100 border-gray-300 dark:border-stone-700 border"
             >
               <IconSearch />
             </Combobox.Button>
@@ -120,12 +120,12 @@ export default function Search() {
         </div>
       </Combobox>
       {/* <input type={'text'} placeholder={'Search'}
-                className='py-2 h-11 border text-left focus:outline-none rounded-lg bg-gray-100 dark:bg-slate-800
-                focus:border-gray-300 dark:focus:border-slate-700 transition text-lg placeholder:text-base w-[600px] duration-200 dark:border-slate-700 border-gray-300 pl-4 pr-10'
+                className='py-2 h-11 border text-left focus:outline-none rounded-lg bg-gray-100 dark:bg-stone-800
+                focus:border-gray-300 dark:focus:border-stone-700 transition text-lg placeholder:text-base w-[600px] duration-200 dark:border-stone-700 border-gray-300 pl-4 pr-10'
                 autoComplete={'off'}
             />
             <button className="absolute w-14 rounded-r-lg flex justify-center items-center h-11 right-0
-             top-0 bottom-0 dark:bg-slate-700 bg-gray-100 border-gray-300 dark:border-slate-700 border">
+             top-0 bottom-0 dark:bg-stone-700 bg-gray-100 border-gray-300 dark:border-stone-700 border">
                 <IconSearch />
             </button> */}
     </div>
@@ -136,7 +136,7 @@ const IconSearch = () => {
   return (
     <div>
       <svg
-        className="w-5 h-5 dark:text-slate-300"
+        className="w-5 h-5 dark:text-stone-300"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

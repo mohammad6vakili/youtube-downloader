@@ -52,7 +52,7 @@ export default function Slug({ AllProfile, subcat, GetAllRecommended }) {
         <Banner />
         <div
           dir="ltr"
-          className={`bg-white/80 w-full lg:h-40 h-48 dark:bg-slate-900 flex flex-col lg:px-10  pt-4 pb-0`}
+          className={`bg-white/80 w-full lg:h-40 h-48 dark:bg-stone-900 flex flex-col lg:px-10  pt-4 pb-0`}
         >
           <div className="flex items-center h-full w-full">
             <div className="relative rounded-full bg-red-100 p-1 flex justify-center h-20 w-20 items-center">
@@ -69,7 +69,7 @@ export default function Slug({ AllProfile, subcat, GetAllRecommended }) {
               <p className="text-xl text-gray-800 font-medium dark:text-gray-100 capitalize">
                 {slug[1]}
               </p>
-              {/* <p className='text-gray-500 dark:text-slate-300 text-[12px] mt-0.5'>36.2M subscribers</p> */}
+              {/* <p className='text-gray-500 dark:text-stone-300 text-[12px] mt-0.5'>36.2M subscribers</p> */}
             </div>
           </div>
           {/* Tab */}
@@ -79,7 +79,7 @@ export default function Slug({ AllProfile, subcat, GetAllRecommended }) {
               onClick={() => setTab(0)}
               className={`uppercase text-gray-600 pb-2 text-xs  flex justify-center items-center ${
                 tab === 0 && "border-b-[1px]"
-              } border-gray-600 transition duration-300 dark:border-slate-300 cursor-pointer dark:text-slate-300 dark:hover:text-slate-100 text-slate-900`}
+              } border-gray-600 transition duration-300 dark:border-stone-300 cursor-pointer dark:text-stone-300 dark:hover:text-stone-100 text-stone-900`}
             >
               Recommended
             </button>
@@ -89,7 +89,7 @@ export default function Slug({ AllProfile, subcat, GetAllRecommended }) {
                 onClick={() => setTab(index + 1)}
                 className={`uppercase text-gray-600 pb-2 text-xs ${
                   tab === index + 1 && "border-b-[1px]"
-                } flex transition-all duration-150 justify-center items-center border-gray-600 dark:border-slate-300 cursor-pointer dark:text-slate-300 dark:hover:text-slate-100 text-slate-900`}
+                } flex transition-all duration-150 justify-center items-center border-gray-600 dark:border-stone-300 cursor-pointer dark:text-stone-300 dark:hover:text-stone-100 text-stone-900`}
               >
                 {res?.category_title}
               </button>
@@ -100,7 +100,7 @@ export default function Slug({ AllProfile, subcat, GetAllRecommended }) {
         </div>
         <div
           dir="ltr"
-          className="mt-6 lg:pl-20 px-10 lg:pr-10 w-full pb-10 dark:text-slate-300 text-gray-600"
+          className="mt-6 lg:pl-20 px-10 lg:pr-10 w-full pb-10 dark:text-stone-300 text-gray-600"
         >
           {/* Videos */}
           {tab === 0 && (

@@ -32,7 +32,6 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
 
   const getCategoryVideos = async (id) => {
     try {
-      console.log("miooo");
       setLoading(true);
       const response = await axios.get(
         `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}&is_special=true`,
@@ -56,14 +55,7 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
     }
     console.log(array);
     return array.map((item, index) => (
-      <SwiperSlide
-        style={{
-          width: "100%",
-          height: "400px",
-          minWidth: "100%",
-        }}
-        key={index}
-      >
+      <SwiperSlide className="multi-carousel" key={index}>
         <CardMultipleVideo data={item} />
       </SwiperSlide>
     ));
@@ -75,49 +67,108 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
 
   return (
     <div className="w-full">
-      {/* Subscripition */}
-      <section className="w-full relative" style={{ padding: "0 8px" }}>
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={13}
-          className="mySwiper"
-          breakpoints={{
-            300: {
-              width: 300,
-              slidesPerView: 1,
-            },
-            568: {
-              width: 568,
-              slidesPerView: 2,
-            },
-            970: {
-              width: 970,
-              slidesPerView: 3,
-            },
-          }}
-        >
-          {AllChannel?.map((item, key) => (
-            <SwiperSlide key={item.id}>
-              <CardSubscrib item={item} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
       <div>
         {/* All Videos */}
-        <section className="mt-10 w-full relative px-2">
+        <section className="w-full relative px-2">
           <Swiper
             slidesPerView={1}
             spaceBetween={0}
             className="mySwiper relative"
+            onReachEnd={() =>
+              setCarouselController({
+                ...carouselController,
+                hideNext: true,
+                hidePrev: false,
+              })
+            }
+            onReachBeginning={() => {
+              setCarouselController({
+                ...carouselController,
+                hidePrev: true,
+                hideNext: false,
+              });
+            }}
+            onSwiper={(swiper) => setCarouselInstance(swiper)}
           >
             {showItems()}
+            {/* next btn */}
+            {!carouselController?.hideNext && AllVideo?.length > 5 && (
+              <button
+                onClick={() => {
+                  carouselInstance.slideNext();
+                  setCarouselController({
+                    ...carouselController,
+                    hidePrev: false,
+                  });
+                }}
+                className="flex items-center justify-center bg-white dark:bg-gray-700 mv-carousel-dir-btn"
+                type="button"
+                style={{
+                  borderRadius: "50%",
+                  position: "absolute",
+                  right: "10px",
+                  top: "45%",
+                  zIndex: 99999999999,
+                }}
+              >
+                <AiOutlineRight
+                  className="dark:color-white"
+                  fontSize={26}
+                  fontWeight={900}
+                />
+              </button>
+            )}
+            {/* prev btn */}
+            {!carouselController?.hidePrev && AllVideo?.length > 5 && (
+              <button
+                onClick={() => carouselInstance.slidePrev()}
+                className="flex items-center justify-center bg-white dark:bg-gray-700 mv-carousel-dir-btn"
+                type="button"
+                style={{
+                  borderRadius: "50%",
+                  position: "absolute",
+                  left: "10px",
+                  top: "45%",
+                  zIndex: 99999999999,
+                }}
+              >
+                <AiOutlineLeft
+                  className="dark:color-white"
+                  fontSize={26}
+                  fontWeight={900}
+                />
+              </button>
+            )}
           </Swiper>
-          {/* <div className="grid place-content-center place-items-center grid-cols-12 gap-y-4 w-full mt-6"> */}
-          {/* {AllVideo.map((data, index) => (
-            <CardVideo data={data} key={index} />
-          ))} */}
-          {/* </div> */}
+        </section>
+
+        {/* Subscripition */}
+        <section className="w-full relative mt-10" style={{ padding: "0 8px" }}>
+          <Swiper
+            slidesPerView={1}
+            spaceBetween={13}
+            className="mySwiper"
+            breakpoints={{
+              300: {
+                width: 300,
+                slidesPerView: 1,
+              },
+              568: {
+                width: 568,
+                slidesPerView: 2,
+              },
+              970: {
+                width: 970,
+                slidesPerView: 3,
+              },
+            }}
+          >
+            {AllChannel?.map((item, key) => (
+              <SwiperSlide key={item.id}>
+                <CardSubscrib item={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </section>
 
         {/* Categories */}
@@ -186,6 +237,7 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
             <Swiper
               slidesPerView={4}
               spaceBetween={20}
+              lazy
               onReachEnd={() =>
                 setSwiperController({
                   ...swiperController,
@@ -243,11 +295,6 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
                       <CardSpecialVideo data={res} />
                     </SwiperSlide>
                   ))}
-              {/* {!loading && selectedCategoryVideos?.length === 0 && (
-                <div className="text-xl flex justify-start mt-5">
-                  No video found!
-                </div>
-              )} */}
               {/* next btn */}
               {!swiperController?.hideNext &&
                 selectedCategoryVideos?.length > 5 && (

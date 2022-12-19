@@ -73,13 +73,13 @@ const NavBar = () => {
         </Link>
         <div
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="p-2 cursor-pointer dark:bg-slate-800 bg-gray-200 rounded-full flex justify-center items-center"
+          className="p-2 cursor-pointer dark:bg-stone-800 bg-gray-200 rounded-full flex justify-center items-center"
         >
           {/* 
             <svg className="w-6 text-yellow-300 h-6 fill-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
           ) : ( */}
           <svg
-            className="w-6 text-slate-700 dark:text-slate-400 h-6 fill-slate-700 dark:fill-slate-400"
+            className="w-6 text-stone-700 dark:text-stone-400 h-6 fill-stone-700 dark:fill-stone-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -111,7 +111,7 @@ const NavBar = () => {
                 height={"60px"}
                 className="w-full"
               />
-              <p className="mx-1 font-bold dark:text-slate-100 text-gray-600">
+              <p className="mx-1 font-bold dark:text-stone-100 text-gray-600">
                 Rasmlink
               </p>
             </div>
@@ -119,7 +119,7 @@ const NavBar = () => {
         </div>
         <button onClick={() => setToggle((toggle) => !toggle)}>
           <svg
-            className="w-7 h-7 text-gray-800 dark:text-slate-100"
+            className="w-7 h-7 text-gray-800 dark:text-stone-100"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -135,7 +135,7 @@ const NavBar = () => {
         </button>
       </div>
       {toggle && (
-        <div className="fixed z-50 inset-y-0 right-0 h-screen w-full bg-gray-900/50 dark:bg-slate-900/60 backdrop-blur-[2px]">
+        <div className="fixed z-50 inset-y-0 right-0 h-screen w-full bg-gray-900/50 dark:bg-stone-900/60 backdrop-blur-[2px]">
           <div
             onClick={() => setToggle(false)}
             style={{
@@ -145,11 +145,11 @@ const NavBar = () => {
               zIndex: "-99",
             }}
           ></div>
-          <div className="lg:w-1/6 w-[80%] bg-white dark:bg-slate-900 h-full">
+          <div className="lg:w-1/6 w-[80%] bg-white dark:bg-stone-900 h-full">
             <div className="flex items-center justify-start px-4">
               <button onClick={() => setToggle((toggle) => !toggle)}>
                 <svg
-                  className="w-7 h-7 text-gray-800 dark:text-slate-100"
+                  className="w-7 h-7 text-gray-800 dark:text-stone-100"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -172,7 +172,7 @@ const NavBar = () => {
                     height={"60px"}
                     className="w-full"
                   />
-                  <p className="mx-1 font-bold dark:text-slate-100 text-gray-600">
+                  <p className="mx-1 font-bold dark:text-stone-100 text-gray-600">
                     Rasmlink
                   </p>
                 </div>
@@ -180,7 +180,7 @@ const NavBar = () => {
             </div>
             <div className="my-2">
               <div className="p-3 flex justify-center flex-col">
-                <h1 className="dark:text-slate-200 text-md font-medium mx-1">
+                <h1 className="dark:text-stone-200 text-md font-medium mx-1">
                   Categories
                 </h1>
               </div>
@@ -192,7 +192,7 @@ const NavBar = () => {
                   >
                     <div
                       key={index}
-                      className="flex transition duration-100 dark:hover:bg-slate-600 bg-transparent hover:bg-slate-100 py-0.5 cursor-pointer rounded-lg items-center space-x-4"
+                      className="flex transition duration-100 dark:hover:bg-stone-600 bg-transparent hover:bg-stone-100 py-0.5 cursor-pointer rounded-lg items-center space-x-4"
                     >
                       <div className="relative rounded-full flex justify-center h-9 w-9 items-center">
                         <svg
@@ -223,9 +223,9 @@ const NavBar = () => {
                   </Link>
                 ))}
               </div>
-              <div className="my-2 h-[1px] w-[90%] px-2 mx-auto  dark:bg-slate-700 bg-gray-100"></div>
+              <div className="my-2 h-[1px] w-[90%] px-2 mx-auto  dark:bg-stone-700 bg-gray-100"></div>
               <div className="p-3 flex justify-center flex-col">
-                <h1 className="dark:text-slate-200 text-md font-medium mx-1">
+                <h1 className="dark:text-stone-200 text-md font-medium mx-1">
                   Channels
                 </h1>
                 <div className="mt-2 space-y-3">
@@ -233,7 +233,7 @@ const NavBar = () => {
                     <Link key={index} href={`/profile/${item.channel_id}`}>
                       <div
                         key={index}
-                        className="flex transition duration-100 dark:hover:bg-slate-600 bg-transparent hover:bg-slate-100 py-0.5 px-1 cursor-pointer rounded-lg items-center space-x-4"
+                        className="flex transition duration-100 dark:hover:bg-stone-600 bg-transparent hover:bg-stone-100 py-0.5 px-1 cursor-pointer rounded-lg items-center space-x-4"
                       >
                         <div className="relative rounded-full flex justify-center h-7 w-7 items-center">
                           <Image
@@ -247,7 +247,7 @@ const NavBar = () => {
                             height={"40"}
                           />
                         </div>
-                        <div className="text-xs dark:text-slate-200 text-slate-800">
+                        <div className="text-xs dark:text-stone-200 text-stone-800">
                           {item?.channel_title.substring(0, 20)}...
                         </div>
                       </div>
