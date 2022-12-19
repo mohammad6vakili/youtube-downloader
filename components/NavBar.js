@@ -239,8 +239,8 @@ const NavBar = () => {
                           <Image
                             alt="image placeholder"
                             src={
-                              item?.channel_metadata.items[0].snippet.thumbnails
-                                .default.url
+                              item?.channel_metadata?.items[0]?.snippet
+                                ?.thumbnails.default.url
                             }
                             className="object-cover w-9 h-9 rounded-full"
                             width={"40"}
