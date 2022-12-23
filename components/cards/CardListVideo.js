@@ -2,10 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function CardListVideo({ data, key }) {
+export default function CardListVideo({ data, key, inStyle }) {
   return (
     <Link href={data?.video_id ? "/video/" + data?.video_id : "#"} key={key}>
-      <div className="flex transition duration-150 cursor-pointer  hover:bg-white dark:hover:bg-stone-900 py-1 justify-start items-start space-y-2">
+      <div
+        style={inStyle}
+        className="flex transition duration-150 cursor-pointer  hover:bg-white dark:hover:bg-stone-900 py-1 justify-start items-start space-y-2"
+      >
         <div className="w-full h-full flex">
           <div className="relative w-[120px]  bg-stone-200 rounded-lg dark:bg-stone-700">
             {/* <!-- Image Video --> */}

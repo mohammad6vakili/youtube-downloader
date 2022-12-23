@@ -17,6 +17,7 @@ export default function CardMultipleVideo({ data }) {
           }
           width={"100%"}
           height={"100%"}
+          className="object-cover"
         />
         <Link href={"/video/" + data[0]?.video_id}>
           <div>

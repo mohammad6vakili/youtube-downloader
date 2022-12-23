@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ItemMenu from "./ItemMenu";
+import { BsPlusCircle } from "react-icons/bs";
+import { RiSlideshow3Line } from "react-icons/ri";
 import Search from "./Search";
 
 const NavBar = () => {
@@ -112,7 +114,7 @@ const NavBar = () => {
                 className="w-full"
               />
               <p className="mx-1 font-bold dark:text-stone-100 text-gray-600">
-                Rasmlink
+                Uncutino
               </p>
             </div>
           </Link>
@@ -173,17 +175,37 @@ const NavBar = () => {
                     className="w-full"
                   />
                   <p className="mx-1 font-bold dark:text-stone-100 text-gray-600">
-                    Rasmlink
+                    Uncutino
                   </p>
                 </div>
               </Link>
             </div>
             <div className="my-2">
+              <div className="mt-2 px-2">
+                <Link href={"https://uncutino.ir/add"}>
+                  <div className="flex transition duration-100 dark:hover:bg-stone-600 bg-transparent hover:bg-stone-100 py-0.5 cursor-pointer rounded-lg items-center space-x-4">
+                    <div className="relative rounded-full flex justify-center h-9 w-9 items-center">
+                      <BsPlusCircle />
+                    </div>
+                    <div className="text-sm font-light">Add Youtube Videos</div>
+                  </div>
+                </Link>
+                <Link href={"https://uncutino.ir"}>
+                  <div className="flex transition duration-100 dark:hover:bg-stone-600 bg-transparent hover:bg-stone-100 py-0.5 cursor-pointer rounded-lg items-center space-x-4">
+                    <div className="relative rounded-full flex justify-center h-9 w-9 items-center">
+                      <RiSlideshow3Line />
+                    </div>
+                    <div className="text-sm font-light">Know More</div>
+                  </div>
+                </Link>
+              </div>
+              <div className="my-2 h-[1px] w-[90%] px-2 mx-auto  dark:bg-stone-700 bg-gray-100"></div>
               <div className="p-3 flex justify-center flex-col">
                 <h1 className="dark:text-stone-200 text-md font-medium mx-1">
                   Categories
                 </h1>
               </div>
+
               <div className="mt-2 px-2">
                 {category?.map((res, index) => (
                   <Link
@@ -224,7 +246,7 @@ const NavBar = () => {
                 ))}
               </div>
               <div className="my-2 h-[1px] w-[90%] px-2 mx-auto  dark:bg-stone-700 bg-gray-100"></div>
-              <div className="p-3 flex justify-center flex-col">
+              {/* <div className="p-3 flex justify-center flex-col">
                 <h1 className="dark:text-stone-200 text-md font-medium mx-1">
                   Channels
                 </h1>
@@ -254,7 +276,7 @@ const NavBar = () => {
                     </Link>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -1,11 +1,12 @@
 {
-  "name": "youtubedownloader",
-  "homepage": "http://youtube4free.com",
+  "name": "uncutino",
+  "homepage": "https://uncutino.com",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
+    "export": "next export",
     "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {

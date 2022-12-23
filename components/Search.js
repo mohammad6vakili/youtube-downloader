@@ -10,7 +10,7 @@ export default function Search() {
   useEffect(() => {
     const getCategory = async () => {
       const resCategory = await fetch(
-        `https://rasmlink.ir/api-v1/youtube_videos?is_special=true`,
+        `https://rasmlink.ir/api-v1/youtube_videos?is_special=false`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -18,6 +18,7 @@ export default function Search() {
         }
       );
       const allcagegory = await resCategory.json();
+      console.log(allcagegory);
       setData(allcagegory);
     };
     getCategory();
@@ -71,7 +72,7 @@ export default function Search() {
                   Nothing found.
                 </div>
               ) : (
-                filteredPeople.map((person) => (
+                filteredPeople.slice(0, 15).map((person) => (
                   <Combobox.Option
                     key={person.id}
                     className={({ active }) =>

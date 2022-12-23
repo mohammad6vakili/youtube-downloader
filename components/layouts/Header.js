@@ -16,7 +16,7 @@ import CardMultipleVideo from "../cards/CardMultipleVideo";
 
 export default function Header({ AllVideo, AllCategory, AllChannel }) {
   const [loading, setLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(AllCategory[0]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedCategoryVideos, setSelectedCategoryVideos] = useState([]);
   // carousels controllers
   const [swiperInstance, setSwiperInstance] = useState();
@@ -34,7 +34,7 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}&is_special=true`,
+        `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -49,9 +49,13 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
   };
 
   const showItems = () => {
+    let newAllVideos = [];
+    AllVideo.slice(0, 15).map((it) => {
+      newAllVideos.push(it);
+    });
     let array = [];
-    for (var i = 0; i < AllVideo.length; i += 5) {
-      array.push(AllVideo.slice(i, i + 5));
+    for (var i = 0; i < newAllVideos.length; i += 5) {
+      array.push(newAllVideos.slice(i, i + 5));
     }
     console.log(array);
     return array.map((item, index) => (
@@ -207,7 +211,7 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
                     });
                   }}
                   data={res}
-                  selectedCategory={selectedCategory.id}
+                  selectedCategory={selectedCategory?.id}
                 />
               </SwiperSlide>
             ))}

@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "fix category carousel"
+        "fix category carousel",
+        "app bug fix"
     ]
 }
