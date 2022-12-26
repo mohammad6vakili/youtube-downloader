@@ -11,12 +11,9 @@ import axios from "axios";
 import Banner from "@/components/Banner";
 import Link from "next/link";
 const Tabs = [
-  { title: "Recommended", id: 0 },
-  { title: "Videos", id: 1 },
+  { title: "Videos", id: 0 },
+  { title: "Recommended", id: 1 },
   { title: "Playlist", id: 2 },
-  // { 'title': 'ویدیو ها' },
-  // { 'title': 'لیست پخش' },
-  // { 'title': 'درباره' }
 ];
 
 export default function Username({ data, RecomendedVideos }) {
@@ -27,6 +24,9 @@ export default function Username({ data, RecomendedVideos }) {
   const [videos, setVideos] = useState([]);
   const [recomendedVideos, setRecomendedVideos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [paginate, setPaginate] = useState(20);
+  const [canLoadMore, setCanLoadMore] = useState(true);
+  const [paginateLoading, setPaginateLoading] = useState(false);
 
   const getChannelPlaylist = async () => {
     try {
@@ -47,11 +47,15 @@ export default function Username({ data, RecomendedVideos }) {
     }
   };
 
-  const getChannelVideos = async () => {
+  const getChannelVideos = async (page) => {
     try {
-      setLoading(true);
+      if (paginate === 20) {
+        setLoading(true);
+      } else {
+        setPaginateLoading(true);
+      }
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_videos?video_channel_id=${data?.channel_id}&offset=1&limit=20&is_special=false`,
+        `https://rasmlink.ir/api-v1/youtube_videos?video_channel_id=${data?.channel_id}&offset=1&limit=${paginate}&is_special=false`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -60,9 +64,15 @@ export default function Username({ data, RecomendedVideos }) {
       );
       setVideos(response.data);
       setLoading(false);
+      setPaginateLoading(false);
+      setPaginate(paginate + 20);
+      if (response.data.length === 0) {
+        setCanLoadMore(false);
+      }
     } catch ({ err, response }) {
       console.log(err, response);
       setLoading(false);
+      setPaginateLoading(false);
     }
   };
 
@@ -90,12 +100,13 @@ export default function Username({ data, RecomendedVideos }) {
   }, []);
 
   useEffect(() => {
+    setPaginate(20);
     switch (selectedTab) {
       case 0:
-        getRecomendedVideos();
+        getChannelVideos();
         break;
       case 1:
-        getChannelVideos();
+        getRecomendedVideos();
         break;
       case 2:
         getChannelPlaylist();
@@ -190,8 +201,45 @@ export default function Username({ data, RecomendedVideos }) {
             ))}
           </div>
         </div>
-        {/* Recomended */}
+        {/* Videos */}
         {selectedTab === 0 && (
+          <div
+            dir="ltr"
+            className="mt-6 pl-10 pr-10 w-full pb-10 text-gray-600 dark:text-stone-300"
+          >
+            {/* Videos */}
+            {!loading && videos?.length > 0 && (
+              <div className="w-full relative">
+                <div className="grid grid-cols-12 gap-2 gap-y-4 w-full mt-6">
+                  {videos?.map((res, index) => (
+                    <CardVideo data={res} key={index} />
+                  ))}
+                </div>
+              </div>
+            )}
+            {!loading && videos?.length === 0 && (
+              <div className="p-10 w-full flex justify-between items-center text-gray-۷00 text-xl">
+                ویدیویی اپلود نکرده است
+              </div>
+            )}
+            {!loading && !paginateLoading && canLoadMore && (
+              <div
+                onClick={getChannelVideos}
+                className="flex justify-center mt-10 cursor-pointer"
+              >
+                Load more
+              </div>
+            )}
+            {paginateLoading && (
+              <div className="flex justify-center mt-10 cursor-pointer">
+                Loading . . .
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Recomended */}
+        {selectedTab === 1 && (
           <div
             dir="ltr"
             className="mt-6 pl-10 pr-10 w-full pb-10 text-gray-600 dark:text-stone-300"
@@ -226,29 +274,7 @@ export default function Username({ data, RecomendedVideos }) {
               )}
           </div>
         )}
-        {/* Videos */}
-        {selectedTab === 1 && (
-          <div
-            dir="ltr"
-            className="mt-6 pl-10 pr-10 w-full pb-10 text-gray-600 dark:text-stone-300"
-          >
-            {/* Videos */}
-            {!loading && videos?.length > 0 && (
-              <div className="w-full relative">
-                <div className="grid grid-cols-12 gap-2 gap-y-4 w-full mt-6">
-                  {videos?.map((res, index) => (
-                    <CardVideo data={res} key={index} />
-                  ))}
-                </div>
-              </div>
-            )}
-            {!loading && videos?.length === 0 && (
-              <div className="p-10 w-full flex justify-between items-center text-gray-۷00 text-xl">
-                ویدیویی اپلود نکرده است
-              </div>
-            )}
-          </div>
-        )}
+
         {/* Playlist */}
         {selectedTab === 2 && (
           <div
@@ -261,7 +287,11 @@ export default function Username({ data, RecomendedVideos }) {
                 <div className="w-full mt-6 flex flex-wrap">
                   {playList?.map((res, index) => (
                     <CardListVideo
-                      inStyle={{ minWidth: "300px", marginRight: "15px" }}
+                      inStyle={{
+                        minWidth: "300px",
+                        marginRight: "15px",
+                        maxWidth: "300px",
+                      }}
                       data={res}
                       key={index}
                     />

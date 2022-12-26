@@ -110,7 +110,7 @@ export default function SingleVideo({ video, getPlaylist, getRelated }) {
 
               <div className="mt-4">
                 <div className="flex flex-row justify-between items-center">
-                  <Link href={`/profile/${video.video_channel_id}`}>
+                  <Link href={`/channel/${video.video_channel_id}`}>
                     <div className="flex justify- items-center">
                       <div className="">
                         <Image

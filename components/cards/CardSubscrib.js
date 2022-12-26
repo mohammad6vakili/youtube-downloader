@@ -6,7 +6,7 @@ import { SwiperSlide } from "swiper/react";
 export default function CardSubscrib({ item }) {
   return (
     <div className="w-full">
-      <Link href={`/profile/${item.channel_id}`}>
+      <Link href={`/channel/${item.channel_id}`}>
         <div className="flex w-full dark:bg-stone-700 bg-white/80 h-20 rounded-lg cursor-pointer px-4 py-2">
           <div className="flex justify-center h-full items-center">
             <Image

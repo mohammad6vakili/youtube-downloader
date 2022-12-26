@@ -27,6 +27,7 @@ export default function Main({
         <NavBar />
         <div className="flex w-full">
           <div
+            style={{ minHeight: "100vh" }}
             className={
               "p-4 w-full flex-col dark:bg-stone-800 bg-gray-100 mx-auto flex pt-6"
             }

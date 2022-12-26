@@ -54,7 +54,7 @@ const NavBar = () => {
       {/* Button Add video */}
       <div className="flex flex-row-reverse items-center space-x-8">
         <div></div>
-        <Link href="https://rasmlink.com/studio" target={"_blank"}>
+        <Link href="https://uncutino.ir/add" target={"_blank"}>
           <a className="capitalize rounded-md bg-red-600 flex justify-around items-center text-white lg:text-sm text-xs lg:px-6 px-4 py-2">
             <span>add video</span>
             <svg
@@ -210,7 +210,9 @@ const NavBar = () => {
                 {category?.map((res, index) => (
                   <Link
                     key={index}
-                    href={`/category/${res?.id}/${res?.category_title}`}
+                    href={`/category/${
+                      res?.id
+                    }/${res?.category_title.toLowerCase()}`}
                   >
                     <div
                       key={index}

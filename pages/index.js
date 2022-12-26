@@ -3,7 +3,6 @@ import Head from "next/head";
 import Main from "@/components/layouts/Main";
 import Header from "../components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
-import { useEffect } from "react";
 import { env } from "process";
 
 export default function Home({ AllVideo, AllCategory, AllChannel }) {

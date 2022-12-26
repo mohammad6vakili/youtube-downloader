@@ -10,17 +10,19 @@ export default function CardMultipleVideo({ data }) {
       className="mv-multiple-carousel-container"
     >
       {/* ----------------------- section right ---------------------- */}
-      <div className="mv-section-right">
+      <div className="mv-section-right" style={{ borderRadius: "15px" }}>
         <Image
           src={
             data[0]?.video_metadata?.items[0]?.snippet?.thumbnails?.maxres?.url
           }
           width={"100%"}
+          style={{ borderRadius: "15px" }}
           height={"100%"}
-          className="object-cover"
+          objectFit="cover"
+          layout="fill"
         />
         <Link href={"/video/" + data[0]?.video_id}>
-          <div>
+          <div style={{ borderRadius: "15px" }}>
             <div className="mv-hover-title">{data[0]?.video_title}</div>
             <div
               className="mv-hover-title"
@@ -36,17 +38,20 @@ export default function CardMultipleVideo({ data }) {
       <div className="mv-section-left">
         {/* first item */}
         {data[1] && (
-          <div>
+          <div style={{ borderRadius: "15px" }}>
             <Image
               src={
                 data[1]?.video_metadata?.items[0]?.snippet?.thumbnails?.maxres
                   ?.url
               }
+              style={{ borderRadius: "15px" }}
               width={"100%"}
               height={"100%"}
+              objectFit="cover"
+              layout="fill"
             />
             <Link href={"/video/" + data[1]?.video_id}>
-              <div>
+              <div style={{ borderRadius: "15px" }}>
                 <div
                   className="mv-hover-title"
                   style={{ fontSize: "16px", marginBottom: 5 }}
@@ -66,17 +71,20 @@ export default function CardMultipleVideo({ data }) {
         )}
         {/* second item */}
         {data[2] && (
-          <div>
+          <div style={{ borderRadius: "15px" }}>
             <Image
               src={
                 data[2]?.video_metadata?.items[0]?.snippet?.thumbnails?.maxres
                   ?.url
               }
+              style={{ borderRadius: "15px" }}
               width={"100%"}
               height={"100%"}
+              objectFit="cover"
+              layout="fill"
             />
             <Link href={"/video/" + data[2]?.video_id}>
-              <div>
+              <div style={{ borderRadius: "15px" }}>
                 <div
                   className="mv-hover-title"
                   style={{ fontSize: "16px", marginBottom: 5 }}
@@ -96,17 +104,20 @@ export default function CardMultipleVideo({ data }) {
         )}
         {/* third item */}
         {data[3] && (
-          <div>
+          <div style={{ borderRadius: "15px" }}>
             <Image
+              style={{ borderRadius: "15px" }}
               src={
                 data[3]?.video_metadata?.items[0]?.snippet?.thumbnails?.maxres
                   ?.url
               }
               width={"100%"}
               height={"100%"}
+              objectFit="cover"
+              layout="fill"
             />
             <Link href={"/video/" + data[3]?.video_id}>
-              <div>
+              <div style={{ borderRadius: "15px" }}>
                 <div
                   className="mv-hover-title"
                   style={{ fontSize: "16px", marginBottom: 5 }}
@@ -126,17 +137,20 @@ export default function CardMultipleVideo({ data }) {
         )}
         {/* fourth item */}
         {data[4] && (
-          <div>
+          <div style={{ borderRadius: "15px" }}>
             <Image
               src={
                 data[4]?.video_metadata?.items[0]?.snippet?.thumbnails?.maxres
                   ?.url
               }
+              style={{ borderRadius: "15px" }}
               width={"100%"}
               height={"100%"}
+              objectFit="cover"
+              layout="fill"
             />
             <Link href={"/video/" + data[4]?.video_id}>
-              <div>
+              <div style={{ borderRadius: "15px" }}>
                 <div
                   className="mv-hover-title"
                   style={{ fontSize: "16px", marginBottom: 5 }}

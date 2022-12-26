@@ -92,7 +92,7 @@ export default function Sidebar({ hidden = false }) {
           </h1>
           <div className="mt-2 space-y-3">
             {channel?.map((item, index) => (
-              <Link key={index} href={`/profile/${item.channel_id}`}>
+              <Link key={index} href={`/channel/${item.channel_id}`}>
                 <div
                   key={index}
                   className="flex transition duration-100 dark:hover:bg-stone-600 bg-transparent hover:bg-stone-100 py-0.5 px-1 cursor-pointer rounded-lg items-center space-x-4"

@@ -6,7 +6,12 @@ import Image from "next/image";
 import CardVideo from "@/components/cards/CardVideo";
 import Banner from "@/components/Banner";
 
-export default function Slug({ AllProfile, subcat, GetAllRecommended }) {
+export default function Slug({
+  AllProfile,
+  subcat,
+  GetAllRecommended,
+  allcagegory,
+}) {
   const [tab, setTab] = useState(0);
   const route = useRouter();
   const { slug } = route.query;
@@ -172,6 +177,7 @@ export async function getServerSideProps({ params }) {
       AllProfile,
       subcat,
       GetAllRecommended,
+      allcagegory,
     },
   };
 }

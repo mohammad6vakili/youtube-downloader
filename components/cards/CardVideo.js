@@ -50,7 +50,7 @@ export default function CardVideo({ data, key }) {
 
           <div className="flex flex-row mt-2 gap-2">
             {/* <!-- Profile Picture --> */}
-            <Link href={`/profile/${channel[0]?.channel_id}`} passHref>
+            <Link href={`/channel/${channel[0]?.channel_id}`} passHref>
               <div className="relative">
                 <Image
                   alt="image placeholder"
@@ -67,14 +67,14 @@ export default function CardVideo({ data, key }) {
 
             {/* <!-- Description --> */}
             <div clas="flex flex-col" style={{ direction: "ltr" }}>
-              <Link href={`/profile/${channel[0]?.channel_id}`}>
+              <Link href={`/channel/${channel[0]?.channel_id}`}>
                 <p className="dark:text-stone-100 text-gray-800 text-xs font-">
                   {data?.video_title?.length > 50
                     ? data?.video_title?.substring(0, 50) + "..."
                     : data?.video_title}
                 </p>
               </Link>
-              <Link href={"/profile/" + channel[0]?.channel_id} passHref>
+              <Link href={"/channel/" + channel[0]?.channel_id} passHref>
                 <a
                   className="dark:text-stone-300 text-gray-500 text-xs mt-2 hover:text-gray-900 capitalize"
                   href="#"

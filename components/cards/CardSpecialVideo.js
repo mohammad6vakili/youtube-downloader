@@ -12,11 +12,13 @@ const CardSpecialVideo = ({ data }) => {
           minHeight: "300px",
           minWidth: "310px",
           padding: "0 20px 0 0 ",
+          borderRadius: "15px",
         }}
         className="capitalize text-md transition duration-150 cursor-pointer flex justify-start items-start flex-col relative"
       >
-        <div>
+        <div style={{ borderRadius: "15px" }}>
           <Image
+            style={{ borderRadius: "15px" }}
             src={data?.video_metadata?.items[0]?.snippet?.thumbnails?.high?.url}
             className="object-cover"
             alt="image profile"
@@ -25,7 +27,7 @@ const CardSpecialVideo = ({ data }) => {
           />
         </div>
         <div className="category-special-videos">
-          <div>
+          <div style={{ borderRadius: "15px" }}>
             <BsFillPlayBtnFill color="white" fontSize={70} />
           </div>
         </div>

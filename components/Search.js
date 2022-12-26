@@ -18,7 +18,6 @@ export default function Search() {
         }
       );
       const allcagegory = await resCategory.json();
-      console.log(allcagegory);
       setData(allcagegory);
     };
     getCategory();
@@ -33,16 +32,14 @@ export default function Search() {
             .includes(query.toLowerCase().replace(/\s+/g, ""))
         );
 
-  const handleSubmitSearchEngine = (e) => {
-    e.preventDefault();
-    // if (.length > 3) {
-    router.replace(`/video/${selected?.video_id}`);
-    // }
-  };
-
   return (
     <div className="text-sm relative z-50" dir="ltr">
-      <Combobox value={selected} onChange={setSelected}>
+      <Combobox
+        onChange={(val) => {
+          router.push(`/video/${val.video_id}`);
+          setSelected(val.video_id);
+        }}
+      >
         <div className="relative mt-1">
           <div className="relative w-full rounded-lg cursor-default overflow-hidden bg-white  sm:text-sm">
             <Combobox.Input
@@ -53,7 +50,7 @@ export default function Search() {
               onChange={(event) => setQuery(event.target.value)}
             />
             <Combobox.Button
-              onClick={handleSubmitSearchEngine}
+              onClick={() => router.push(`/video/${selected?.video_id}`)}
               className="absolute w-14 rounded-r-lg flex justify-center items-center h-full right-0 top-0 bottom-0 dark:bg-stone-700 bg-gray-100 border-gray-300 dark:border-stone-700 border"
             >
               <IconSearch />

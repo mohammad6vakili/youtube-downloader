@@ -18,9 +18,26 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedCategoryVideos, setSelectedCategoryVideos] = useState([]);
+  const [selectedSubCategoryVideos, setSelectedSubCategoryVideos] = useState(
+    {}
+  );
+  const [mainSliderData, setMainSliderData] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [categoriesVideo, setCategoriesVideo] = useState({
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    10: [],
+    11: [],
+    13: [],
+    15: [],
+    16: [],
+  });
   // carousels controllers
   const [swiperInstance, setSwiperInstance] = useState();
   const [carouselInstance, setCarouselInstance] = useState();
+  const [ready, setReady] = useState(false);
   const [carouselController, setCarouselController] = useState({
     hideNext: false,
     hidePrev: true,
@@ -30,11 +47,27 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
     hidePrev: true,
   });
 
-  const getCategoryVideos = async (id) => {
+  const getCategories = async () => {
+    try {
+      const response = await axios.get(
+        "https://rasmlink.ir/api-v1/video_categories",
+        {
+          headers: {
+            Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
+          },
+        }
+      );
+      setCategories(response.data);
+    } catch ({ err, response }) {
+      console.log(err, response);
+    }
+  };
+
+  const getCategoriesVideo = async (id) => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}`,
+        `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}&offset=1&limit=15`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -42,32 +75,104 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
         }
       );
       setLoading(false);
-      setSelectedCategoryVideos(response.data);
+      categoriesVideo[id] = response.data;
+      setTimeout(() => {
+        setReady(true);
+      }, 1000);
+    } catch ({ err, response }) {
+      setLoading(false);
+    }
+  };
+
+  const getCategoryVideo = async (id, isSub) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}&offset=1&limit=15&is_special=false`,
+        {
+          headers: {
+            Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
+          },
+        }
+      );
+      setLoading(false);
+      if (!isSub) {
+        setSelectedCategoryVideos(response.data);
+      } else {
+        selectedSubCategoryVideos[id] = response.data;
+      }
+    } catch ({ err, response }) {
+      setLoading(false);
+    }
+  };
+
+  const getMainSliderData = async (id) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}&offset=1&limit=15&is_special=true`,
+        {
+          headers: {
+            Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
+          },
+        }
+      );
+      setLoading(false);
+      setMainSliderData(response.data);
     } catch ({ err, response }) {
       setLoading(false);
     }
   };
 
   const showItems = () => {
-    let newAllVideos = [];
-    AllVideo.slice(0, 15).map((it) => {
-      newAllVideos.push(it);
-    });
-    let array = [];
-    for (var i = 0; i < newAllVideos.length; i += 5) {
-      array.push(newAllVideos.slice(i, i + 5));
+    if (selectedCategory) {
+      let newAllVideos = [];
+      mainSliderData.slice(0, 15).map((it) => {
+        newAllVideos.push(it);
+      });
+      let array = [];
+      for (var i = 0; i < newAllVideos.length; i += 5) {
+        array.push(newAllVideos.slice(i, i + 5));
+      }
+      return array.map((item, index) => (
+        <SwiperSlide className="multi-carousel" key={index}>
+          <CardMultipleVideo data={item} />
+        </SwiperSlide>
+      ));
+    } else {
+      let newAllVideos = [];
+      AllVideo.slice(0, 15).map((it) => {
+        newAllVideos.push(it);
+      });
+      let array = [];
+      for (var i = 0; i < newAllVideos.length; i += 5) {
+        array.push(newAllVideos.slice(i, i + 5));
+      }
+      return array.map((item, index) => (
+        <SwiperSlide className="multi-carousel" key={index}>
+          <CardMultipleVideo data={item} />
+        </SwiperSlide>
+      ));
     }
-    console.log(array);
-    return array.map((item, index) => (
-      <SwiperSlide className="multi-carousel" key={index}>
-        <CardMultipleVideo data={item} />
-      </SwiperSlide>
-    ));
   };
 
   useEffect(() => {
-    getCategoryVideos(AllCategory[0].id);
+    getCategories();
+    AllCategory.map((cat) => {
+      getCategoriesVideo(cat.id);
+    });
   }, []);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      categories.map((ca) => {
+        if (selectedCategory.id === ca?.main_category_info?.id) {
+          console.log(ca);
+          getCategoryVideo(ca.id, true);
+        }
+      });
+    }
+  }, [selectedCategory]);
 
   return (
     <div className="w-full">
@@ -204,10 +309,14 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
                 <CardExplore
                   onClick={() => {
                     setSelectedCategory(res);
-                    getCategoryVideos(res.id);
+                    getCategoryVideo(res.id);
+                    getMainSliderData(res.id);
                     setSwiperController({
                       hideNext: false,
                       hidePrev: true,
+                    });
+                    Object.keys(selectedSubCategoryVideos).forEach((key) => {
+                      delete selectedSubCategoryVideos[key];
                     });
                   }}
                   data={res}
@@ -219,135 +328,384 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
         </section>
 
         {/* Categories special videos */}
-        <section
-          style={{ padding: "0 8px" }}
-          className="mt-10 w-full flex flex-col"
-        >
-          {/* title */}
-          {!loading && selectedCategoryVideos?.length > 0 && (
-            <Link
-              href={`category/${selectedCategory?.id}/${selectedCategory?.category_title}`}
-            >
+        {selectedCategory && (
+          <section
+            style={{ padding: "0 8px" }}
+            className="mt-10 w-full flex flex-col"
+          >
+            {/* title */}
+            {!loading && selectedCategoryVideos?.length > 0 && (
               <span
                 className="mb-5 text-2xl cursor-pointer"
                 style={{ lineHeight: "26px", fontWeight: 700 }}
               >
                 {selectedCategory?.category_title}
               </span>
-            </Link>
-          )}
-          {/* swiper */}
-          <div className="w-full">
-            <Swiper
-              slidesPerView={4}
-              spaceBetween={20}
-              lazy
-              onReachEnd={() =>
-                setSwiperController({
-                  ...swiperController,
-                  hideNext: true,
-                  hidePrev: false,
-                })
-              }
-              onReachBeginning={() => {
-                setSwiperController({
-                  ...swiperController,
-                  hidePrev: true,
-                  hideNext: false,
-                });
-              }}
-              onSwiper={(swiper) => setSwiperInstance(swiper)}
-              className="mySwiper relative"
-              navigation
-              breakpoints={{
-                300: {
-                  width: 300,
-                  slidesPerView: 2,
-                },
-                568: {
-                  width: 568,
-                  slidesPerView: 3,
-                },
-                970: {
-                  width: "970",
-                  slidesPerView: 4,
-                },
-              }}
-            >
-              {loading
-                ? Array.from(Array(7).keys()).map((item, index) => (
-                    <SwiperSlide
-                      style={{
-                        width: "310px",
-                        height: "320px",
-                        minWidth: "310px",
+            )}
+            {/* swiper */}
+            <div className="w-full">
+              <Swiper
+                slidesPerView={4}
+                spaceBetween={20}
+                lazy
+                onReachEnd={() =>
+                  setSwiperController({
+                    ...swiperController,
+                    hideNext: true,
+                    hidePrev: false,
+                  })
+                }
+                onReachBeginning={() => {
+                  setSwiperController({
+                    ...swiperController,
+                    hidePrev: true,
+                    hideNext: false,
+                  });
+                }}
+                onSwiper={(swiper) => setSwiperInstance(swiper)}
+                className="mySwiper relative"
+                navigation
+                breakpoints={{
+                  300: {
+                    width: 300,
+                    slidesPerView: 2,
+                  },
+                  568: {
+                    width: 568,
+                    slidesPerView: 3,
+                  },
+                  970: {
+                    width: "970",
+                    slidesPerView: 4,
+                  },
+                }}
+              >
+                {loading
+                  ? Array.from(Array(7).keys()).map((item, index) => (
+                      <SwiperSlide
+                        style={{
+                          width: "310px",
+                          height: "320px",
+                          minWidth: "310px",
+                        }}
+                        key={index}
+                      >
+                        <CardSpecialVideoSkeleton />
+                      </SwiperSlide>
+                    ))
+                  : selectedCategoryVideos?.map((res, index) => (
+                      <SwiperSlide
+                        style={{
+                          width: "310px",
+                          height: "320px",
+                          minWidth: "310px",
+                        }}
+                        key={index}
+                      >
+                        <CardSpecialVideo data={res} />
+                      </SwiperSlide>
+                    ))}
+                {/* next btn */}
+                {!swiperController?.hideNext &&
+                  selectedCategoryVideos?.length > 5 && (
+                    <button
+                      onClick={() => {
+                        swiperInstance.slideNext();
+                        setSwiperController({
+                          ...swiperController,
+                          hidePrev: false,
+                        });
                       }}
-                      key={index}
-                    >
-                      <CardSpecialVideoSkeleton />
-                    </SwiperSlide>
-                  ))
-                : selectedCategoryVideos?.map((res, index) => (
-                    <SwiperSlide
+                      type="button"
                       style={{
-                        width: "310px",
-                        height: "320px",
-                        minWidth: "310px",
+                        position: "absolute",
+                        right: "0",
+                        top: "45%",
+                        zIndex: 99999999999,
                       }}
-                      key={index}
                     >
-                      <CardSpecialVideo data={res} />
-                    </SwiperSlide>
-                  ))}
-              {/* next btn */}
-              {!swiperController?.hideNext &&
-                selectedCategoryVideos?.length > 5 && (
-                  <button
-                    onClick={() => {
-                      swiperInstance.slideNext();
-                      setSwiperController({
-                        ...swiperController,
-                        hidePrev: false,
-                      });
-                    }}
-                    type="button"
-                    style={{
-                      position: "absolute",
-                      right: "0",
-                      top: "45%",
-                      zIndex: 99999999999,
-                    }}
+                      <AiOutlineRight
+                        fontSize={34}
+                        fontWeight={900}
+                        color="white"
+                      />
+                    </button>
+                  )}
+                {/* prev btn */}
+                {!swiperController?.hidePrev &&
+                  selectedCategoryVideos?.length > 5 && (
+                    <button
+                      onClick={() => swiperInstance.slidePrev()}
+                      type="button"
+                      style={{
+                        position: "absolute",
+                        left: "10px",
+                        top: "45%",
+                        zIndex: 99999999999,
+                      }}
+                    >
+                      <AiOutlineLeft
+                        fontSize={34}
+                        fontWeight={900}
+                        color="white"
+                      />
+                    </button>
+                  )}
+              </Swiper>
+            </div>
+          </section>
+        )}
+
+        {/* Sub Category Videos */}
+        {selectedCategory &&
+          Object.keys(selectedSubCategoryVideos).length > 0 &&
+          Object.keys(selectedSubCategoryVideos).map((caVi, index) => {
+            if (selectedSubCategoryVideos[caVi]?.length > 0) {
+              return (
+                <section
+                  style={{ padding: "0 8px", marginTop: "75px" }}
+                  className="w-full flex flex-col"
+                >
+                  {/* title */}
+                  <span
+                    className="mb-5 text-2xl cursor-pointer"
+                    style={{ lineHeight: "26px", fontWeight: 700 }}
                   >
-                    <AiOutlineRight
-                      fontSize={34}
-                      fontWeight={900}
-                      color="white"
-                    />
-                  </button>
-                )}
-              {/* prev btn */}
-              {!swiperController?.hidePrev &&
-                selectedCategoryVideos?.length > 5 && (
-                  <button
-                    onClick={() => swiperInstance.slidePrev()}
-                    type="button"
-                    style={{
-                      position: "absolute",
-                      left: "10px",
-                      top: "45%",
-                      zIndex: 99999999999,
-                    }}
-                  >
-                    <AiOutlineLeft
-                      fontSize={34}
-                      fontWeight={900}
-                      color="white"
-                    />
-                  </button>
-                )}
-            </Swiper>
-          </div>
-        </section>
+                    {categories.map((cc) => {
+                      if (cc.id.toString() === caVi.toString()) {
+                        return cc.category_title;
+                      }
+                    })}
+                  </span>
+                  {/* swiper */}
+                  <div className="w-full">
+                    <Swiper
+                      slidesPerView={4}
+                      spaceBetween={20}
+                      lazy
+                      onReachEnd={() =>
+                        setSwiperController({
+                          ...swiperController,
+                          hideNext: true,
+                          hidePrev: false,
+                        })
+                      }
+                      onReachBeginning={() => {
+                        setSwiperController({
+                          ...swiperController,
+                          hidePrev: true,
+                          hideNext: false,
+                        });
+                      }}
+                      onSwiper={(swiper) => setSwiperInstance(swiper)}
+                      className="mySwiper relative"
+                      navigation
+                      breakpoints={{
+                        300: {
+                          width: 300,
+                          slidesPerView: 2,
+                        },
+                        568: {
+                          width: 568,
+                          slidesPerView: 3,
+                        },
+                        970: {
+                          width: "970",
+                          slidesPerView: 4,
+                        },
+                      }}
+                    >
+                      {selectedSubCategoryVideos[caVi]?.map((res, index) => (
+                        <SwiperSlide
+                          style={{
+                            width: "310px",
+                            height: "320px",
+                            minWidth: "310px",
+                          }}
+                          key={index}
+                        >
+                          <CardSpecialVideo data={res} />
+                        </SwiperSlide>
+                      ))}
+                      {/* next btn */}
+                      {!swiperController?.hideNext &&
+                        selectedSubCategoryVideos?.length > 5 && (
+                          <button
+                            onClick={() => {
+                              swiperInstance.slideNext();
+                              setSwiperController({
+                                ...swiperController,
+                                hidePrev: false,
+                              });
+                            }}
+                            type="button"
+                            style={{
+                              position: "absolute",
+                              right: "0",
+                              top: "45%",
+                              zIndex: 99999999999,
+                            }}
+                          >
+                            <AiOutlineRight
+                              fontSize={34}
+                              fontWeight={900}
+                              color="white"
+                            />
+                          </button>
+                        )}
+                      {/* prev btn */}
+                      {!swiperController?.hidePrev &&
+                        selectedCategoryVideos?.length > 5 && (
+                          <button
+                            onClick={() => swiperInstance.slidePrev()}
+                            type="button"
+                            style={{
+                              position: "absolute",
+                              left: "10px",
+                              top: "45%",
+                              zIndex: 99999999999,
+                            }}
+                          >
+                            <AiOutlineLeft
+                              fontSize={34}
+                              fontWeight={900}
+                              color="white"
+                            />
+                          </button>
+                        )}
+                    </Swiper>
+                  </div>
+                </section>
+              );
+            }
+          })}
+
+        {/* All Category Videos */}
+        {!selectedCategory &&
+          ready &&
+          Object.keys(categoriesVideo).map((caVi, index) => {
+            if (categoriesVideo[caVi].length > 0) {
+              return (
+                <section
+                  style={{ padding: "0 8px", marginTop: "75px" }}
+                  className="w-full flex flex-col"
+                >
+                  {/* title */}
+                  {AllCategory.map((cc) => {
+                    if (cc.id.toString() === caVi.toString()) {
+                      return (
+                        <span
+                          onClick={() => console.log(categoriesVideo[caVi])}
+                          className="mb-5 text-2xl cursor-pointer"
+                          style={{ lineHeight: "26px", fontWeight: 700 }}
+                        >
+                          {cc.category_title}
+                        </span>
+                      );
+                    }
+                  })}
+                  {/* swiper */}
+                  <div className="w-full">
+                    <Swiper
+                      slidesPerView={4}
+                      spaceBetween={20}
+                      lazy
+                      onReachEnd={() =>
+                        setSwiperController({
+                          ...swiperController,
+                          hideNext: true,
+                          hidePrev: false,
+                        })
+                      }
+                      onReachBeginning={() => {
+                        setSwiperController({
+                          ...swiperController,
+                          hidePrev: true,
+                          hideNext: false,
+                        });
+                      }}
+                      onSwiper={(swiper) => setSwiperInstance(swiper)}
+                      className="mySwiper relative"
+                      navigation
+                      breakpoints={{
+                        300: {
+                          width: 300,
+                          slidesPerView: 2,
+                        },
+                        568: {
+                          width: 568,
+                          slidesPerView: 3,
+                        },
+                        970: {
+                          width: "970",
+                          slidesPerView: 4,
+                        },
+                      }}
+                    >
+                      {categoriesVideo[caVi]?.map((res, index) => (
+                        <SwiperSlide
+                          style={{
+                            width: "310px",
+                            height: "320px",
+                            minWidth: "310px",
+                          }}
+                          key={index}
+                        >
+                          <CardSpecialVideo data={res} />
+                        </SwiperSlide>
+                      ))}
+                      {/* next btn */}
+                      {!swiperController?.hideNext &&
+                        categoriesVideo?.length > 5 && (
+                          <button
+                            onClick={() => {
+                              swiperInstance.slideNext();
+                              setSwiperController({
+                                ...swiperController,
+                                hidePrev: false,
+                              });
+                            }}
+                            type="button"
+                            style={{
+                              position: "absolute",
+                              right: "0",
+                              top: "45%",
+                              zIndex: 99999999999,
+                            }}
+                          >
+                            <AiOutlineRight
+                              fontSize={34}
+                              fontWeight={900}
+                              color="white"
+                            />
+                          </button>
+                        )}
+                      {/* prev btn */}
+                      {!swiperController?.hidePrev &&
+                        selectedCategoryVideos?.length > 5 && (
+                          <button
+                            onClick={() => swiperInstance.slidePrev()}
+                            type="button"
+                            style={{
+                              position: "absolute",
+                              left: "10px",
+                              top: "45%",
+                              zIndex: 99999999999,
+                            }}
+                          >
+                            <AiOutlineLeft
+                              fontSize={34}
+                              fontWeight={900}
+                              color="white"
+                            />
+                          </button>
+                        )}
+                    </Swiper>
+                  </div>
+                </section>
+              );
+            }
+          })}
       </div>
     </div>
   );
