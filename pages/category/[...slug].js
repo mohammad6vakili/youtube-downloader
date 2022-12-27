@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import CardVideo from "@/components/cards/CardVideo";
 import Banner from "@/components/Banner";
+import Env from "../../constant/env.json";
 
 export default function Slug({
   AllProfile,
@@ -19,9 +20,7 @@ export default function Slug({
   subcat.map((res) => {
     return arr.push(res.id);
   });
-  // console.log(arr)
   const getVideoCats = arr.map((item, index) => {
-    console.log("GetAllRecommended", GetAllRecommended);
     const data = GetAllRecommended.filter((res) => {
       return res?.video_categories_ids == item.toString();
     });
@@ -130,7 +129,7 @@ export async function getServerSideProps({ params }) {
   const { slug } = params;
   // Get All Profile Data
   const resProfile = await fetch(
-    `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${slug[0]}&is_verfied=true`,
+    `${Env.baseUrl}/youtube_videos?video_categories_ids=${slug[0]}&is_verfied=true&video_status=1&is_active=true`,
     {
       headers: {
         Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -139,7 +138,7 @@ export async function getServerSideProps({ params }) {
   );
   const AllProfile = await resProfile.json();
 
-  const ressubcat = await fetch(`https://rasmlink.ir/api-v1/video_categories`, {
+  const ressubcat = await fetch(`${Env.baseUrl}/video_categories`, {
     headers: {
       Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
     },
@@ -152,7 +151,7 @@ export async function getServerSideProps({ params }) {
   });
 
   const recommended = await fetch(
-    `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${slug[0]}&is_active=true&is_verfied=true`,
+    `${Env.baseUrl}/youtube_videos?video_categories_ids=${slug[0]}&is_verfied=true&video_status=1&is_active=true`,
     {
       headers: {
         Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -160,8 +159,6 @@ export async function getServerSideProps({ params }) {
     }
   );
   const GetAllRecommended = await recommended.json();
-
-  // console.log(GetAllRecommended);
 
   if (!AllProfile && !subcat && !GetAllRecommended) {
     return {

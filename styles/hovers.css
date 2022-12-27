@@ -27,12 +27,37 @@
   width: calc(100% - 40px);
   height: 100%;
 }
-
 @keyframes skeleton-loading {
   0% {
     background-color: hsl(0, 0%, 95%, 0.1);
   }
   100% {
     background-color: hsla(0, 0%, 0%, 0.1);
+  }
+}
+@media only screen and (max-width: 800px) {
+  .mv-header-add-video-btn {
+    display: none !important;
+  }
+  .mv-theme-changer {
+    margin-left: 0 !important;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .mv-searchbar {
+    width: 350px !important;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .mv-searchbar {
+    width: 300px !important;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .mv-searchbar {
+    width: 250px !important;
   }
 }

@@ -11,6 +11,7 @@ import CardSpecialVideoSkeleton from "../cards/CardSpecialVideoSkeleton";
 import { GetVideo } from "pages/api/getvideo";
 import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
 import axios from "axios";
+import Env from "../../constant/env.json";
 import Link from "next/link";
 import CardMultipleVideo from "../cards/CardMultipleVideo";
 
@@ -49,14 +50,11 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get(
-        "https://rasmlink.ir/api-v1/video_categories",
-        {
-          headers: {
-            Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
-          },
-        }
-      );
+      const response = await axios.get(`${Env.baseUrl}/video_categories`, {
+        headers: {
+          Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
+        },
+      });
       setCategories(response.data);
     } catch ({ err, response }) {
       console.log(err, response);
@@ -67,7 +65,7 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}&offset=1&limit=15`,
+        `${Env.baseUrl}/youtube_videos?video_categories_ids=${id}&offset=1&limit=15&video_status=1&is_active=true`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -88,7 +86,7 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}&offset=1&limit=15&is_special=false`,
+        `${Env.baseUrl}/youtube_videos?video_categories_ids=${id}&offset=1&limit=15&is_special=false&video_status=1&is_active=true`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -110,7 +108,7 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${id}&offset=1&limit=15&is_special=true`,
+        `${Env.baseUrl}/youtube_videos?video_categories_ids=${id}&offset=1&limit=15&is_special=true&video_status=1&is_active=true&order_by=asc`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -167,7 +165,6 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
     if (selectedCategory) {
       categories.map((ca) => {
         if (selectedCategory.id === ca?.main_category_info?.id) {
-          console.log(ca);
           getCategoryVideo(ca.id, true);
         }
       });
@@ -304,6 +301,20 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
               },
             }}
           >
+            <SwiperSlide>
+              <div
+                onClick={() => {
+                  setSelectedCategory(null);
+                }}
+              >
+                <div
+                  style={!selectedCategory ? { backgroundColor: "red" } : {}}
+                  className="capitalize rounded-3xl text-md dark:bg-stone-700 bg-stone-50 transition duration-150 hover:bg-gray-300 cursor-pointer flex justify-center items-center flex-col h-10"
+                >
+                  <p className="font-medium text-sm text-center">All videos</p>
+                </div>
+              </div>
+            </SwiperSlide>
             {AllCategory.map((res, index) => (
               <SwiperSlide key={index}>
                 <CardExplore
@@ -595,7 +606,6 @@ export default function Header({ AllVideo, AllCategory, AllChannel }) {
                     if (cc.id.toString() === caVi.toString()) {
                       return (
                         <span
-                          onClick={() => console.log(categoriesVideo[caVi])}
                           className="mb-5 text-2xl cursor-pointer"
                           style={{ lineHeight: "26px", fontWeight: 700 }}
                         >

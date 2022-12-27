@@ -6,6 +6,7 @@ import CardListVideo from "@/components/cards/CardListVideo";
 import Avatar from "@/public/images/samansayyar.jpeg";
 import Image from "next/image";
 import CardVideo from "@/components/cards/CardVideo";
+import Env from "../../constant/env.json";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Banner from "@/components/Banner";
@@ -27,12 +28,13 @@ export default function Username({ data, RecomendedVideos }) {
   const [paginate, setPaginate] = useState(20);
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [paginateLoading, setPaginateLoading] = useState(false);
+  const [recomendedRandom, setRecomendedRandom] = useState([]);
 
   const getChannelPlaylist = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_playlists?channel_id=${data?.channel_id}`,
+        `${Env.baseUrl}/youtube_playlists?channel_id=${data?.channel_id}`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -42,7 +44,6 @@ export default function Username({ data, RecomendedVideos }) {
       setPlayList(response.data);
       setLoading(false);
     } catch ({ err, response }) {
-      console.log(err, response);
       setLoading(false);
     }
   };
@@ -55,7 +56,7 @@ export default function Username({ data, RecomendedVideos }) {
         setPaginateLoading(true);
       }
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_videos?video_channel_id=${data?.channel_id}&offset=1&limit=${paginate}&is_special=false`,
+        `${Env.baseUrl}/youtube_videos?video_channel_id=${data?.channel_id}&offset=1&limit=${paginate}&is_special=false&video_status=1&is_active=true`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -70,7 +71,6 @@ export default function Username({ data, RecomendedVideos }) {
         setCanLoadMore(false);
       }
     } catch ({ err, response }) {
-      console.log(err, response);
       setLoading(false);
       setPaginateLoading(false);
     }
@@ -80,7 +80,7 @@ export default function Username({ data, RecomendedVideos }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_videos?video_channel_id=${data?.channel_id}&offset=1&limit=20&is_special=true`,
+        `${Env.baseUrl}/youtube_videos?video_channel_id=${data?.channel_id}&offset=1&limit=20&is_special=true&video_status=1&is_active=true`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -90,13 +90,31 @@ export default function Username({ data, RecomendedVideos }) {
       setRecomendedVideos(response.data);
       setLoading(false);
     } catch ({ err, response }) {
-      console.log(err, response);
+      setLoading(false);
+    }
+  };
+
+  const getRecomendedRandomVideos = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${Env.baseUrl}/youtube_videos?video_channel_id=${data?.channel_id}&offset=1&limit=${paginate}&is_special=false&video_status=1&is_active=true&order_by=random`,
+        {
+          headers: {
+            Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
+          },
+        }
+      );
+      setRecomendedRandom(response.data);
+      setLoading(false);
+    } catch ({ err, response }) {
       setLoading(false);
     }
   };
 
   useEffect(() => {
     getChannelVideos();
+    getRecomendedRandomVideos();
   }, []);
 
   useEffect(() => {
@@ -259,7 +277,7 @@ export default function Username({ data, RecomendedVideos }) {
               videos?.length > 0 && (
                 <div className="w-full relative">
                   <div className="grid grid-cols-12 gap-2 gap-y-4 w-full mt-6">
-                    {videos?.map((res, index) => (
+                    {recomendedRandom?.map((res, index) => (
                       <CardVideo data={res} key={index} />
                     ))}
                   </div>
@@ -315,7 +333,7 @@ export async function getServerSideProps({ params }) {
   const { username } = params;
   // Get All Profile Data
   const resProfile = await fetch(
-    `https://rasmlink.ir/api-v1/youtube_channels?channel_id=${username[0]}`,
+    `${Env.baseUrl}/youtube_channels?channel_id=${username[0]}`,
     {
       headers: {
         Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -326,7 +344,7 @@ export async function getServerSideProps({ params }) {
 
   // Get All Profile Data
   const ResVideoProfile = await fetch(
-    `https://rasmlink.ir/api-v1/youtube_videos?video_channel_id=${username[0]}&is_special=true&is_verfied=true&offset=1&limit=20`,
+    `${Env.baseUrl}/youtube_videos?video_channel_id=${username[0]}&is_special=true&is_verfied=true&offset=1&limit=20&video_status=1&is_active=true`,
     {
       headers: {
         Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",

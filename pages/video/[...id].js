@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import "plyr-react/plyr.css";
+import Env from "../../constant/env.json";
 import Hls from "hls.js";
 import Plyr from "plyr-react";
 import CardListRelativeVideo from "@/components/cards/CardListRelativeVideo";
@@ -18,7 +19,6 @@ import axios from "axios";
 export default function SingleVideo({ video, getPlaylist, getRelated }) {
   const router = useRouter();
   const { id } = router.query;
-  // console.log("video.video_url::", video.video_id)
   const player = useRef();
   const [loading, setLoading] = useState(false);
   const [selectedCategoryVideos, setSelectedCategoryVideos] = useState([]);
@@ -27,7 +27,7 @@ export default function SingleVideo({ video, getPlaylist, getRelated }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://rasmlink.ir/api-v1/youtube_videos?video_channel_id=${video?.video_channel_id}&is_special=false&offset=1&limit=15`,
+        `${Env.baseUrl}/youtube_videos?video_channel_id=${video?.video_channel_id}&is_special=false&offset=1&limit=15&video_status=1&is_active=true`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -42,7 +42,6 @@ export default function SingleVideo({ video, getPlaylist, getRelated }) {
   };
 
   useEffect(() => {
-    console.log(video.hls_url);
     const loadVideo = async () => {
       if (video.hls_url !== "") {
         const video0 = document.getElementById("plyr");
@@ -56,7 +55,6 @@ export default function SingleVideo({ video, getPlaylist, getRelated }) {
       }
     };
     loadVideo();
-    // console.log(getPlaylist)
   });
 
   useEffect(() => {
@@ -289,7 +287,7 @@ export async function getServerSideProps({ params }) {
   }
   const { id } = params;
   const result = await fetch(
-    `https://rasmlink.ir/api-v1/youtube_videos?video_id=${id[0]}`,
+    `${Env.baseUrl}/youtube_videos?video_id=${id[0]}&video_status=1&is_active=true`,
     {
       headers: {
         Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -297,9 +295,8 @@ export async function getServerSideProps({ params }) {
     }
   );
   const video = await result.json();
-  console.log("video[0]?.video_playlist_id", video[0]?.video_playlist_id);
   const resultgetPlaylist = await fetch(
-    `https://rasmlink.ir/api-v1/youtube_playlists?playlist_id=${video[0]?.video_playlist_id}`,
+    `${Env.baseUrl}/youtube_playlists?playlist_id=${video[0]?.video_playlist_id}`,
     {
       headers: {
         Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -309,7 +306,7 @@ export async function getServerSideProps({ params }) {
   const getPlaylist = await resultgetPlaylist.json();
 
   const resultgetRelated = await fetch(
-    `https://rasmlink.ir/api-v1/youtube_videos?video_categories_ids=${video[0]?.video_categories_ids}&is_active=true&is_verfied=true&offset=1&limit=15`,
+    `${Env.baseUrl}/youtube_videos?video_categories_ids=${video[0]?.video_categories_ids}&is_active=true&is_verfied=true&offset=1&limit=15&video_status=1&except_channel_ids=${video[0].video_channel_id}`,
     {
       headers: {
         Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",

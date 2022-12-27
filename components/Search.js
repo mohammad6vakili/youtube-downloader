@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
+import Env from "../constant/env.json";
 
 export default function Search() {
   const router = useRouter();
@@ -10,7 +11,7 @@ export default function Search() {
   useEffect(() => {
     const getCategory = async () => {
       const resCategory = await fetch(
-        `https://rasmlink.ir/api-v1/youtube_videos?is_special=false`,
+        `${Env.baseUrl}/youtube_videos?is_special=false&video_status=1&is_active=true`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -45,7 +46,7 @@ export default function Search() {
             <Combobox.Input
               placeholder={"Search"}
               className="py-2 h-11 sm:w-[450px] lg:w-[600px] border text-left focus:outline-none rounded-lg bg-gray-100 dark:bg-stone-800
-                focus:border-gray-300 dark:focus:border-stone-700 transition text-md placeholder:text-base w-[600px] duration-200 dark:border-stone-700 border-gray-300 pl-4 pr-10"
+                focus:border-gray-300 dark:focus:border-stone-700 transition text-md placeholder:text-base w-[600px] duration-200 dark:border-stone-700 border-gray-300 pl-4 pr-10 mv-searchbar"
               displayValue={(person) => person?.video_title}
               onChange={(event) => setQuery(event.target.value)}
             />

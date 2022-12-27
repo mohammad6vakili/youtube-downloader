@@ -9,7 +9,6 @@ export default function CardListVideo({ data, key, inStyle }) {
       key={key}
     >
       <div
-        onClick={() => console.log(data)}
         style={inStyle}
         className="flex transition duration-150 cursor-pointer  hover:bg-white dark:hover:bg-stone-900 py-1 justify-start items-start space-y-2"
       >

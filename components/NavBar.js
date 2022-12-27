@@ -6,6 +6,7 @@ import ItemMenu from "./ItemMenu";
 import { BsPlusCircle } from "react-icons/bs";
 import { RiSlideshow3Line } from "react-icons/ri";
 import Search from "./Search";
+import Env from "../constant/env.json";
 
 const NavBar = () => {
   const { theme, setTheme } = useTheme();
@@ -14,19 +15,16 @@ const NavBar = () => {
   const [channel, setchannel] = useState([]);
   useEffect(() => {
     const getCategory = async () => {
-      const resCategory = await fetch(
-        `https://rasmlink.ir/api-v1/video_categories`,
-        {
-          headers: {
-            Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
-          },
-        }
-      );
+      const resCategory = await fetch(`${Env.baseUrl}/video_categories`, {
+        headers: {
+          Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
+        },
+      });
       const allcagegory = await resCategory.json();
 
       // Get All Channel
       const resChannel = await fetch(
-        `https://rasmlink.ir/api-v1/youtube_channels?is_special=true&is_verfied=true`,
+        `${Env.baseUrl}/youtube_channels?is_special=true&is_verfied=true`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
@@ -55,7 +53,7 @@ const NavBar = () => {
       <div className="flex flex-row-reverse items-center space-x-8">
         <div></div>
         <Link href="https://uncutino.ir/add" target={"_blank"}>
-          <a className="capitalize rounded-md bg-red-600 flex justify-around items-center text-white lg:text-sm text-xs lg:px-6 px-4 py-2">
+          <a className="capitalize rounded-md bg-red-600 flex justify-around items-center text-white lg:text-sm text-xs lg:px-6 px-4 py-2 mv-header-add-video-btn">
             <span>add video</span>
             <svg
               className="w-6 h-6"
@@ -75,7 +73,7 @@ const NavBar = () => {
         </Link>
         <div
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="p-2 cursor-pointer dark:bg-stone-800 bg-gray-200 rounded-full flex justify-center items-center"
+          className="p-2 cursor-pointer dark:bg-stone-800 bg-gray-200 rounded-full flex justify-center items-center mv-theme-changer"
         >
           {/* 
             <svg className="w-6 text-yellow-300 h-6 fill-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
@@ -98,7 +96,7 @@ const NavBar = () => {
         </div>
       </div>
       {/* Search Feild */}
-      <div className="sm:flex  hidden">
+      <div className="flex">
         <Search />
       </div>
       {/* Icon BarMenu - logo  */}

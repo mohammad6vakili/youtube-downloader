@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import Env from "../../constant/env.json";
 
 export default function CardVideo({ data, key }) {
   const [channel, setchannel] = useState([]);
@@ -8,7 +9,7 @@ export default function CardVideo({ data, key }) {
     const getChannel = async () => {
       if (data) {
         let response = await fetch(
-          `https://rasmlink.ir/api-v1/youtube_channels?channel_title=${data?.video_metadata?.items[0]?.snippet?.channelTitle}`,
+          `${Env.baseUrl}/youtube_channels?channel_title=${data?.video_metadata?.items[0]?.snippet?.channelTitle}`,
           {
             headers: {
               Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",

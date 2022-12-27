@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import Env from "../../constant/env.json";
 import { Suspense } from "react";
 import ItemMenu from "../ItemMenu";
 
@@ -9,19 +10,16 @@ export default function Sidebar({ hidden = false }) {
   const [channel, setchannel] = useState([]);
   useEffect(() => {
     const getCategory = async () => {
-      const resCategory = await fetch(
-        `https://rasmlink.ir/api-v1/video_categories`,
-        {
-          headers: {
-            Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
-          },
-        }
-      );
+      const resCategory = await fetch(`${Env.baseUrl}/video_categories`, {
+        headers: {
+          Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",
+        },
+      });
       const allcagegory = await resCategory.json();
 
       // Get All Channel
       const resChannel = await fetch(
-        `https://rasmlink.ir/api-v1/youtube_channels?is_special=true&is_verfied=true`,
+        `${Env.baseUrl}/youtube_channels?is_special=true&is_verfied=true`,
         {
           headers: {
             Authorization: "010486ba-0e8a-4382-a47f-d888baac5b5c",

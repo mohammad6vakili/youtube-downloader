@@ -5,10 +5,7 @@ import { BsFillPlayBtnFill } from "react-icons/bs";
 
 export default function CardMultipleVideo({ data }) {
   return (
-    <div
-      onClick={() => console.log(data)}
-      className="mv-multiple-carousel-container"
-    >
+    <div className="mv-multiple-carousel-container">
       {/* ----------------------- section right ---------------------- */}
       <div className="mv-section-right" style={{ borderRadius: "15px" }}>
         <Image
